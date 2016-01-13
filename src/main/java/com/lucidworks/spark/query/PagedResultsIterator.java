@@ -1,5 +1,6 @@
 package com.lucidworks.spark.query;
 
+import com.lucidworks.spark.SolrQuerySupport;
 import com.lucidworks.spark.SolrRDD;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrClient;
@@ -70,7 +71,7 @@ public abstract class PagedResultsIterator<T> implements Iterator<T>, Iterable<T
 
   protected List<T> fetchNextPage() throws SolrServerException {
     int start = (cursorMark != null) ? 0 : getStartForNextPage();
-    QueryResponse resp = SolrRDD.querySolr(solrServer, solrQuery, start, cursorMark);
+    QueryResponse resp = SolrQuerySupport.querySolr(solrServer, solrQuery, start, cursorMark);
     if (cursorMark != null)
       cursorMark = resp.getNextCursorMark();
 

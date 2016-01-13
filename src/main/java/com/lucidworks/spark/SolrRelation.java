@@ -105,7 +105,7 @@ public class SolrRelation extends BaseRelation implements Serializable, TableSca
       solrRDD.setSc(sc);
     }
 
-    solrQuery = SolrRDD.toQuery(query);
+    solrQuery = SolrQuerySupport.toQuery(query);
 
     if (fieldList != null) {
       solrQuery.setFields(fieldList);

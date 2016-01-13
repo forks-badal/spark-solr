@@ -1,5 +1,6 @@
 package com.lucidworks.spark.query;
 
+import com.lucidworks.spark.SolrQuerySupport;
 import com.lucidworks.spark.SolrRDD;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -88,7 +89,7 @@ public class StreamingResultsIterator extends StreamingResponseCallback implemen
     int start = usingCursors ? 0 : getStartForNextPage();
     currentPageSize = solrQuery.getRows();
     this.cursorMarkOfCurrentPage = nextCursorMark;
-    QueryResponse resp = SolrRDD.querySolr(solrServer, solrQuery, start, cursorMarkOfCurrentPage, this);
+    QueryResponse resp = SolrQuerySupport.querySolr(solrServer, solrQuery, start, cursorMarkOfCurrentPage, this);
 
     if (usingCursors) {
       nextCursorMark = resp.getNextCursorMark();

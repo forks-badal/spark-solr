@@ -43,7 +43,7 @@ public class SchemaPreservingSolrRDD extends SolrRDD {
   public StructType getQuerySchema(SolrQuery query) throws Exception {
     query.addFilterQuery("__lwcategory_s:schema AND __lwroot_s:root");
     JavaRDD<SolrDocument> rdd1 = queryShards(sc, query);
-    return readSchema(rdd1.collect().get(0), getSolrClient(zkHost) , collection);
+    return readSchema(rdd1.collect().get(0), SolrSupport.getSolrClient(zkHost) , collection);
   }
 
   public static StructType readSchema(SolrDocument doc, SolrClient Solr, String collection) throws IOException, SolrServerException {
@@ -80,7 +80,7 @@ public class SchemaPreservingSolrRDD extends SolrRDD {
         if (name.substring(0, name.length() - 2).equals("__lwchilddocname")) {
           finalName = field.getValue().toString();
         } else {
-            fldr.add(new StructField(name.substring(0, name.length() - 2), getsqlDataType(field.getValue().toString()), true, Metadata.empty()));
+            fldr.add(new StructField(name.substring(0, name.length() - 2), SolrQuerySupport.getsqlDataType(field.getValue().toString()), true, Metadata.empty()));
           }
       }
 

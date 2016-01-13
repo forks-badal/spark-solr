@@ -2,7 +2,8 @@ package com.lucidworks.spark.query;
 
 import com.lucidworks.spark.RDDProcessorTestBase;
 import com.lucidworks.spark.SolrRDD;
-import com.lucidworks.spark.SolrRDD.QueryResultsIterator;
+import com.lucidworks.spark.SolrQuerySupport.QueryResultsIterator;
+
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.CloudSolrClient;

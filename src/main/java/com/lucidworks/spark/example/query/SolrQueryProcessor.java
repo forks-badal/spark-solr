@@ -1,5 +1,6 @@
 package com.lucidworks.spark.example.query;
 
+import com.lucidworks.spark.SolrQuerySupport;
 import com.lucidworks.spark.SolrRDD;
 import com.lucidworks.spark.SparkApp;
 import org.apache.commons.cli.CommandLine;
@@ -29,9 +30,9 @@ public class SolrQueryProcessor implements SparkApp.RDDProcessor {
 
   private static final class WordCountSorter implements Comparator<Tuple2<String, Integer>>, Serializable {
     public int compare(Tuple2<String, Integer> o1, Tuple2<String, Integer> o2) {
-      Integer lhs = o1._2;
-      Integer rhs = o2._2;
-      return (lhs == rhs) ? (o1._1.compareTo(o2._1)) : (lhs > rhs ? 1 : -1);
+      Integer lhs = o1._2();
+      Integer rhs = o2._2();
+      return (lhs == rhs) ? (o1._1().compareTo(o2._1())) : (lhs > rhs ? 1 : -1);
     }
   }
 
@@ -59,7 +60,7 @@ public class SolrQueryProcessor implements SparkApp.RDDProcessor {
     JavaSparkContext jsc = new JavaSparkContext(conf);
 
     SolrRDD solrRDD = new SolrRDD(zkHost, collection);
-    final SolrQuery solrQuery = SolrRDD.toQuery(queryStr);
+    final SolrQuery solrQuery = SolrQuerySupport.toQuery(queryStr);
     JavaRDD<SolrDocument> solrJavaRDD = solrRDD.query(jsc.sc(), solrQuery);
 
     JavaRDD<String> words = solrJavaRDD.flatMap(new FlatMapFunction<SolrDocument, String>() {
